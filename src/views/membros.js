@@ -133,8 +133,8 @@ function buscarMembro() {
             document.getElementById('btnCreate').disabled = true
             document.getElementById('btnRead').disabled = true
 
-            document.getElementById('btnUpdate').disabled = true
-            document.getElementById('btnDelete').disabled = true
+            document.getElementById('btnUpdate').disabled = false
+            document.getElementById('btnDelete').disabled = false
         })
     })
 }
