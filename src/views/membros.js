@@ -47,6 +47,7 @@ let formMembro = document.getElementById('frmMembro')
 let idMembro = document.getElementById('inputIdMem')
 let nomeMembro = document.getElementById('inputNomeMem')
 let foneMembro = document.getElementById('inputPhoneMem')
+let nascimentoMembro = document.getElementById('inputNascimento')
 let cepMembro = document.getElementById('inputCEP')
 let logMembro = document.getElementById('inputLogradouro')
 let numMembro = document.getElementById('inputNumero')
@@ -66,7 +67,8 @@ formMembro.addEventListener('submit', async (event) => {
         compMem: compMembro.value,
         bairroMem: bairroMembro.value,
         cidMem: cidMembro.value,
-        ufMem: ufMembro.value
+        ufMem: ufMembro.value,
+        nascimentoMem: nascimentoMembro.value
     }
     api.newMembro(Membro)
     formMembro.reset()
@@ -118,8 +120,11 @@ function buscarMembro() {
                 document.getElementById('inputComplemento').value = m.compMembro,
                 document.getElementById('inputBairro').value = m.bairroMembro,
                 document.getElementById('inputLocalidade').value = m.cidMembro,
-                document.getElementById('inputUF').value = m.ufMembro
-
+                document.getElementById('inputUF').value = m.ufMembro,
+                // Preenche a data de nascimento
+                document.getElementById('inputNascimento').value = m.nascimentoMembro
+                    ? new Date(m.nascimentoMembro).toISOString().split('T')[0]
+                    : '';
             document.getElementById('inputSearch').value = ""
 
             document.getElementById('inputSearch').disabled = true
@@ -147,7 +152,8 @@ function editarMembro() {
         compMem: compMembro.value,
         bairroMem: bairroMembro.value,
         cidMem: cidMembro.value,
-        ufMem: ufMembro.value
+        ufMem: ufMembro.value,
+        nascimentoMem: nascimentoMembro
     }
     console.log(membro)
 
@@ -163,6 +169,19 @@ function editarMembro() {
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 // CRUD Delete >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+function excluirMembro() {
+    let idMem = idMembro.value
+    console.log(idMem)
+
+    api.deleteMembro(idMem)
+
+    document.getElementById("btnRead").disabled = false
+    document.getElementById('inputSearch').disabled = false
+    document.getElementById('inputSearch').focus()
+    document.getElementById("btnDelete").disabled = true
+    document.getElementById("btnUpdate").disabled = true
+}
 
 // Reset Form >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 api.clearGlobal((clearGlobal) => {

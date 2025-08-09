@@ -31,7 +31,7 @@ contextBridge.exposeInMainWorld('api', {
     // Atualizar membro
     updateMembro: (membro) => ipcRenderer.send('update-membro', membro),
     // Deletar Membros
-
+    deleteMembro: (membro) => ipcRenderer.send('delete-membro', idMem),
     // Limpar tudo
     clearGlobal: (clearGlobal) => ipcRenderer.on('clear-all',clearGlobal),
     focusGlobal: (focusGlobal) => ipcRenderer.on('focus-all', focusGlobal),

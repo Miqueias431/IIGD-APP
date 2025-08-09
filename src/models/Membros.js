@@ -2,9 +2,9 @@
  * Modelo de dados (model) Membros
  */
 
-const {model, Schema} = require ('mongoose')
+const { model, Schema } = require('mongoose')
 
-const membroSchema = new Schema (
+const membroSchema = new Schema(
     {
         nomeMembro: {
             type: String
@@ -32,6 +32,9 @@ const membroSchema = new Schema (
         },
         ufMembro: {
             type: String
+        },
+        nascimentoMembro: {
+            type: Date
         }
     }
 )

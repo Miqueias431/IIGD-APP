@@ -202,7 +202,8 @@ ipcMain.on('new-membro', async (event, membro) => {
             compMembro: membro.compMem,
             bairroMembro: membro.bairroMem,
             cidMembro: membro.cidMem,
-            ufMembro: membro.ufMem
+            ufMembro: membro.ufMem,
+            nascimentoMembro: membro.nascimentoMem
         })
 
         await novoMembro.save() // Salva no mongodb
@@ -282,7 +283,7 @@ ipcMain.handle('autocomplete-membros', async (event, termo) => {
 ipcMain.on('update-membro', (event, membro) => {
     console.log(membro)
     // Campo nome obrigatorio
-    if (membro.nomeMem === '' || membro.foneMem === '' || membro.cepMem === '') {
+    if (membro.nomeMem === '' || membro.foneMem === '' || membro.cepMem === '' || membro.nascimentoMem === '') {
         dialog.showMessageBox({
             type: 'warning',
             title: 'Aviso!',
@@ -290,7 +291,7 @@ ipcMain.on('update-membro', (event, membro) => {
             buttons: ['Ok'],
             defaultId: 0
         })
-        event.reply('focus-membro')
+        event.reply('focus-all')
         return
     }
     dialog.showMessageBox({
@@ -312,7 +313,8 @@ ipcMain.on('update-membro', (event, membro) => {
                     compMembro: membro.compMem,
                     bairroMembro: membro.bairroMem,
                     cidMembro: membro.cidMem,
-                    ufMembro: membro.ufMem
+                    ufMembro: membro.ufMem,
+                    nascimentoMembro: membro.nascimentoMem
                 },
                     {
                         new: true
@@ -329,7 +331,38 @@ ipcMain.on('update-membro', (event, membro) => {
                 console.log(error)
             }
         } else {
-            event.reply('focus-client')
+            event.reply('focus-all')
+        }
+    })
+})
+
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+// CRUD Delete >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ipcMain.on('delete-membro', (event, idMem) => {
+    console.log(idMem)
+    dialog.showMessageBox({
+        type: 'error',
+        title: 'ATENCAO!',
+        message: 'Tem certeza que deseja apagar este fornecedor?',
+        defaultId: 0,
+        buttons: ['Sim', 'Não']
+    }).then(async (result) => {
+        if (result.response === 0) {
+            try {
+                await fornecedorModel.findByIdAndDelete(idForn)
+                event.reply('clear-all')
+                dialog.showMessageBox({
+                    type: 'info',
+                    title: 'Aviso',
+                    message: 'Fornecedor excluído com sucesso!',
+                    buttons: ['Ok']
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        } else {
+            event.reply('focus-all')
         }
     })
 })

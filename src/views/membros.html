@@ -30,7 +30,8 @@
             <hr class="border border-secondary border-1 opacity-75">
 
             <div class="col-md-6">
-                <input type="text" class="form-control" id="inputIdMem" maxlength="30" spellcheck="false" placeholder="id">
+                <input type="text" class="form-control" id="inputIdMem" maxlength="30" spellcheck="false"
+                    placeholder="id">
             </div>
 
             <div class="col-md-8">
@@ -43,13 +44,19 @@
                 <input type="tel" class="form-control" id="inputPhoneMem" required maxlength="15" spellcheck="false">
             </div>
 
-            <div class="col-md-7">
+            <div class="col-md-3">
+                <label for="inputNascimento" class="form-label">Data de Nascimento</label>
+                <input type="date" class="form-control" id="inputNascimento" name="inputNascimento" required>
+            </div>
+
+            <div class="col-md-5">
                 <label for="inputCEP" class="form-label">Digite o CEP:</label>
                 <input type="text" maxlength="9" class="form-control" required id="inputCEP" name="txtCEP">
             </div>
-            
+
             <div class="col-md-3 ">
-                <button type="button" class="btn btn-outline-secondary" id="btnBuscaMem" name="btnBuscaMem" onclick="buscarcep()" >Buscar</button>
+                <button type="button" class="btn btn-outline-secondary" id="btnBuscaMem" name="btnBuscaMem"
+                    onclick="buscarcep()">Buscar</button>
             </div>
 
             <!-- Resultado -->
