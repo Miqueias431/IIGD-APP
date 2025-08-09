@@ -189,10 +189,20 @@ const template = [
 // CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 ipcMain.on('new-membro', async (event, membro) => {
-    // console.log(membro) // Debug do Membro
+    console.log(membro) // Debug do Membro
 
     try {
-        // Extrai dados dos objetos
+        const uploadsDir = path.join(__dirname, 'uploads')
+        if (!fs.existsSync(uploadsDir)) {
+            fs.mkdirSync(uploadsDir)
+        }
+
+        const fileName = `${Date.now()}_${path.basename(membro.imagemMembro)}`
+        const destination = path.join(uploadsDir, fileName);
+
+        fs.copyFileSync(membro.imagemMembro, destination);
+
+        
         const novoMembro = new membroModel({
             nomeMembro: membro.nomeMem,
             foneMembro: membro.foneMem,
@@ -203,10 +213,12 @@ ipcMain.on('new-membro', async (event, membro) => {
             bairroMembro: membro.bairroMem,
             cidMembro: membro.cidMem,
             ufMembro: membro.ufMem,
-            nascimentoMembro: membro.nascimentoMem
+            nascimentoMembro: membro.nascimentoMem,
+            imagemMembro: destination
         })
 
         await novoMembro.save() // Salva no mongodb
+
         dialog.showMessageBox({
             type: 'info',
             title: 'Aviso',
@@ -236,7 +248,7 @@ ipcMain.on('dialog-infoSearchDialog', (event) => {
 
 // Recebimento do pedido de busca do membro pelo nome
 ipcMain.on('search-membro', async (event, nomeMembro) => {
-    // console.log(nomeMembro)
+    console.log(nomeMembro)
     // Busca no banco de dados
     try {
         const dadosMembro = await membroModel.find({ nomeMembro: new RegExp(nomeMembro, 'i') })
@@ -281,7 +293,7 @@ ipcMain.handle('autocomplete-membros', async (event, termo) => {
 
 // CRUD Update >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ipcMain.on('update-membro', (event, membro) => {
-    // console.log(membro)
+    console.log(membro)
     // Campo nome obrigatorio
     if (membro.nomeMem === '' || membro.foneMem === '' || membro.cepMem === '' || membro.nascimentoMem === '') {
         dialog.showMessageBox({
@@ -342,7 +354,7 @@ ipcMain.on('update-membro', (event, membro) => {
 
 // CRUD Delete >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ipcMain.on('delete-membro', (event, idMem) => {
-    // console.log(idMem)
+    console.log(idMem)
     dialog.showMessageBox({
         type: 'error',
         title: 'ATENCAO!',

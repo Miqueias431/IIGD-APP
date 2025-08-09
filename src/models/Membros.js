@@ -35,6 +35,9 @@ const membroSchema = new Schema(
         },
         nascimentoMembro: {
             type: Date
+        },
+        imagemMembro: {
+            type: String
         }
     }
 )

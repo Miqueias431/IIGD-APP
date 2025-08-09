@@ -55,6 +55,8 @@ let compMembro = document.getElementById('inputComplemento')
 let bairroMembro = document.getElementById('inputBairro')
 let cidMembro = document.getElementById('inputLocalidade')
 let ufMembro = document.getElementById('inputUF')
+let inputFotoMembro = document.querySelector("#inputFoto")
+let fotoMembro = document.querySelector("#imagemMembro")
 
 formMembro.addEventListener('submit', async (event) => {
     event.preventDefault()
@@ -68,7 +70,8 @@ formMembro.addEventListener('submit', async (event) => {
         bairroMem: bairroMembro.value,
         cidMem: cidMembro.value,
         ufMem: ufMembro.value,
-        nascimentoMem: nascimentoMembro.value
+        nascimentoMem: nascimentoMembro.value,
+        inputFotoMem: inputFotoMembro.files[0].path 
     }
     api.newMembro(Membro)
     formMembro.reset()
@@ -79,7 +82,7 @@ let arrayMembro = []
 
 function buscarMembro() {
     let nomeMembro = document.getElementById('inputSearch').value.trim().replace(/\s+/g, ' ')
-    // console.log(nomeMembro)
+    console.log(nomeMembro)
     if (nomeMembro === "") {
         api.infoSearchDialog()
     } else {
@@ -108,7 +111,7 @@ function buscarMembro() {
 
     api.dataMembro((event, dadosMembro) => {
         arrayMembro = JSON.parse(dadosMembro)
-        // console.log(arrayMembro)
+        console.log(arrayMembro)
 
         arrayMembro.forEach((m) => {
             document.getElementById('inputIdMem').value = m._id,
@@ -124,7 +127,9 @@ function buscarMembro() {
                 // Preenche a data de nascimento
                 document.getElementById('inputNascimento').value = m.nascimentoMembro
                     ? new Date(m.nascimentoMembro).toISOString().split('T')[0]
-                    : '';
+                    : '',
+
+                inputFotoMembro.src = m.imagemMembro
             document.getElementById('inputSearch').value = ""
 
             document.getElementById('inputSearch').disabled = true
@@ -155,7 +160,7 @@ function editarMembro() {
         ufMem: ufMembro.value,
         nascimentoMem: nascimentoMembro.value
     }
-    // console.log(membro)
+    console.log(membro)
 
     api.updateMembro(membro)
 
@@ -177,7 +182,7 @@ function editarMembro() {
 
 function excluirMembro() {
     let idMem = idMembro.value
-    // console.log(idMem)
+    console.log(idMem)
 
     api.deleteMembro(idMem)
 
@@ -190,7 +195,7 @@ function excluirMembro() {
 
 // Reset Form >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 api.clearGlobal((clearGlobal) => {
-    // console.log("Campo limpo")
+    console.log("Campo limpo")
     formMembro.reset()
 })
 
