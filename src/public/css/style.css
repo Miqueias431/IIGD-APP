@@ -1,0 +1,128 @@
+/* Leyout */
+html{
+    height: 100%;
+}
+
+body {
+    background-color: #e4e4e4;
+    height: 100%;
+    display: flex;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* h1 {
+    color: #000000;
+    font-size: 2rem;
+} */
+
+
+.botaoimg {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    margin: 50px 0;
+    cursor: pointer;
+}
+
+/* SOBRE */
+
+/* Img MIT do sobre */
+.MIT img {
+    margin-left: 35px;
+    width: 50px;
+    height: 50px;
+}
+
+.MIT p {
+    font-weight: 500;
+}
+
+/* Botão OK do sobre */
+.ok {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    background-color: #d9d2d2;
+    width: 100%;
+    padding: 5px 0;
+}
+
+.okbtn {
+    display: flex;
+    justify-content: center;
+    margin-right: 10px;
+    padding: 1px 25px;
+    background-color: #d3d3d3;
+    border: gray solid 1px;
+    color: #000;
+}
+
+/* esconder id Membro */
+
+#inputIdMem {
+    display: none;
+}
+
+/* Inserir img no botão reset */
+
+#btnReset {
+    width: 50px;
+    height: 50px;
+    background-image: url(../img/dust.png);
+    background-size: cover;
+    border: none;
+    cursor: pointer;
+    margin-left: 30px;
+}
+
+/* Parte Fornecedor */
+
+#btnBuscaMem {
+    margin-top: 32px;
+}
+
+/* Parte Produtos */
+
+/* img do produto */
+
+#imagemProduto {
+    border: 1px solid #dfdfdf;
+    border-radius: 5px;
+    width: 260px;
+    height: 260px;
+    padding: 4px;
+    position: fixed;
+    right: 150px;
+    bottom: 100px;
+}
+
+/* Rodapé */
+footer {
+    display: flex;
+    justify-content: space-between;
+    background-color: #373f4d;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+footer p {
+    display: flex;
+    align-items: center;
+    font-size: .9em;
+    font-weight: 500;
+    color: #fff;
+    margin: 12px 20px;
+}
+
+footer img {
+    width: 40px;
+    height: 40px;
+    margin: 12px 20px;
+}
