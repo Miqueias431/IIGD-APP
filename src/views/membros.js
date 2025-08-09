@@ -153,17 +153,22 @@ function editarMembro() {
         bairroMem: bairroMembro.value,
         cidMem: cidMembro.value,
         ufMem: ufMembro.value,
-        nascimentoMem: nascimentoMembro
+        nascimentoMem: nascimentoMembro.value
     }
-    console.log(membro)
+    // console.log(membro)
 
     api.updateMembro(membro)
 
-    document.getElementById("btnRead").disabled = false
-    document.getElementById('inputSearch').disabled = false
-    document.getElementById('inputSearch').focus()
-    document.getElementById("btnDelete").disabled = true
-    document.getElementById("btnUpdate").disabled = true
+    document.getElementById("btnRead").disabled = true
+    document.getElementById('inputSearch').disabled = true
+    document.getElementById('inputSearch').blur()
+    document.getElementById('inputNomeMem').focus()
+
+    // document.getElementById("btnRead").disabled = false
+    // document.getElementById('inputSearch').disabled = false
+    // document.getElementById('inputSearch').focus()
+    // document.getElementById("btnDelete").disabled = true
+    // document.getElementById("btnUpdate").disabled = true
 }
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -172,7 +177,7 @@ function editarMembro() {
 
 function excluirMembro() {
     let idMem = idMembro.value
-    console.log(idMem)
+    // console.log(idMem)
 
     api.deleteMembro(idMem)
 
@@ -185,7 +190,7 @@ function excluirMembro() {
 
 // Reset Form >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 api.clearGlobal((clearGlobal) => {
-    console.log("Campo limpo")
+    // console.log("Campo limpo")
     formMembro.reset()
 })
 

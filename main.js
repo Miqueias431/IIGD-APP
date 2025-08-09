@@ -75,7 +75,7 @@ const membrosWindow = () => {
             width: 1280,  // Largura
             height: 720,  // Altura
             icon: './src/public/img/user-gear.png',
-            resizable: false, // Evitar o redimensionameto
+            resizable: true, // Evitar o redimensionameto
             autoHideMenuBar: true, // Esconde a barra de menu
             parent: father,
             modal: true,
@@ -189,7 +189,7 @@ const template = [
 // CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 ipcMain.on('new-membro', async (event, membro) => {
-    console.log(membro) // Debug do Membro
+    // console.log(membro) // Debug do Membro
 
     try {
         // Extrai dados dos objetos
@@ -236,11 +236,11 @@ ipcMain.on('dialog-infoSearchDialog', (event) => {
 
 // Recebimento do pedido de busca do membro pelo nome
 ipcMain.on('search-membro', async (event, nomeMembro) => {
-    console.log(nomeMembro)
+    // console.log(nomeMembro)
     // Busca no banco de dados
     try {
         const dadosMembro = await membroModel.find({ nomeMembro: new RegExp(nomeMembro, 'i') })
-        console.log(dadosMembro)
+        // console.log(dadosMembro)
         // UX -> Se o membro não estiver cadastrardo, avisar ao usuário e habilitar o botão cadastrar
         if (dadosMembro.length === 0) {
             dialog.showMessageBox({
@@ -281,7 +281,7 @@ ipcMain.handle('autocomplete-membros', async (event, termo) => {
 
 // CRUD Update >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ipcMain.on('update-membro', (event, membro) => {
-    console.log(membro)
+    // console.log(membro)
     // Campo nome obrigatorio
     if (membro.nomeMem === '' || membro.foneMem === '' || membro.cepMem === '' || membro.nascimentoMem === '') {
         dialog.showMessageBox({
@@ -297,7 +297,7 @@ ipcMain.on('update-membro', (event, membro) => {
     dialog.showMessageBox({
         type: 'warning',
         title: 'Aviso',
-        message: 'Deseja alterar os dados do fornecedor?',
+        message: 'Deseja alterar os dados do membro?',
         buttons: ['Sim', 'Não'],
         defaultId: 0
     }).then(async (result) => {
@@ -320,10 +320,12 @@ ipcMain.on('update-membro', (event, membro) => {
                         new: true
                     }
                 )
+
+                // event.reply('clear-all');
                 dialog.showMessageBox({
                     type: 'info',
                     title: 'Aviso',
-                    message: 'Dados do fornecedor alterados com sucesso.',
+                    message: 'Dados do membro alterados com sucesso.',
                     buttons: ['Ok'],
                     defaultId: 0
                 })
@@ -340,7 +342,7 @@ ipcMain.on('update-membro', (event, membro) => {
 
 // CRUD Delete >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ipcMain.on('delete-membro', (event, idMem) => {
-    console.log(idMem)
+    // console.log(idMem)
     dialog.showMessageBox({
         type: 'error',
         title: 'ATENCAO!',
@@ -350,7 +352,7 @@ ipcMain.on('delete-membro', (event, idMem) => {
     }).then(async (result) => {
         if (result.response === 0) {
             try {
-                await fornecedorModel.findByIdAndDelete(idForn)
+                await membroModel.findByIdAndDelete(idMem)
                 event.reply('clear-all')
                 dialog.showMessageBox({
                     type: 'info',

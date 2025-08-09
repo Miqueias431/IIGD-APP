@@ -3,7 +3,7 @@ const { contextBridge, ipcRenderer } = require('electron')
 // Status de conexão (verifica se os bancos de dados está conectado)
 ipcRenderer.send('send-message', "Status do banco de dados:")
 ipcRenderer.on('db-status', (event, status) => {
-    console.log(status)
+    // console.log(status)
 })
 
 // Gerenciamento de processos (desempenho e segurança)
@@ -31,7 +31,7 @@ contextBridge.exposeInMainWorld('api', {
     // Atualizar membro
     updateMembro: (membro) => ipcRenderer.send('update-membro', membro),
     // Deletar Membros
-    deleteMembro: (membro) => ipcRenderer.send('delete-membro', idMem),
+    deleteMembro: (idMem) => ipcRenderer.send('delete-membro', idMem),
     // Limpar tudo
     clearGlobal: (clearGlobal) => ipcRenderer.on('clear-all',clearGlobal),
     focusGlobal: (focusGlobal) => ipcRenderer.on('focus-all', focusGlobal),

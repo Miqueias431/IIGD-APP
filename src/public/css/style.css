@@ -1,12 +1,12 @@
 /* Leyout */
-html{
+html {
     height: 100%;
 }
 
 body {
     background-color: #e4e4e4;
     height: 100%;
-    display: flex;
+    /* display: flex; */
 }
 
 .container {
@@ -81,26 +81,49 @@ body {
     margin-left: 30px;
 }
 
-/* Parte Fornecedor */
+/* Parte Membro */
 
 #btnBuscaMem {
     margin-top: 32px;
 }
 
-/* Parte Produtos */
 
 /* img do produto */
 
-#imagemProduto {
+div.fotoMembro {
+    display: flex;
+    margin-top: 30px;
+    /* flex-direction: row; */
+    /* justify-content: center; */
+    align-items: center;
+    gap: 100px;
+    width: auto;
+    height: 100px;
+
+    &>div#imgMem {
+        display: flex;
+        /* margin-left: 350px; */
+        /* align-items: center;
+        justify-content: center; */
+
+        &>img {
+            
+            border: 1px solid #dfdfdf;
+            border-radius: 5px;
+            width: 150px;
+            height: 150px;
+            padding: 2px;
+        }
+    }
+}
+
+/* #imagemProduto {
     border: 1px solid #dfdfdf;
     border-radius: 5px;
-    width: 260px;
-    height: 260px;
+    width: 200px;
+    height: 200px;
     padding: 4px;
-    position: fixed;
-    right: 150px;
-    bottom: 100px;
-}
+} */
 
 /* Rodapé */
 footer {
