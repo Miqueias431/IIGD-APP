@@ -36,7 +36,7 @@ const membroSchema = new Schema(
         nascimentoMembro: {
             type: Date
         },
-        imagemMembro: {
+        fotoPreview: {
             type: String
         }
     }
