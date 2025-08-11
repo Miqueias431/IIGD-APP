@@ -187,12 +187,17 @@ ipcMain.on("new-membro", async (event, membro) => {
 
   try {
     let fotoDestino = null;
-    if (membro.fotoMem) {
-      const uploadsDir = path.join(__dirname, "uploads");
-      if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir);
+
+    if (membro.fotoMem) { // <-- Aqui usa fotoMem, não fotoMembro
+      const uploadsDir = path.join(__dirname, 'uploads');
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir);
+      }
+
       const ext = path.extname(membro.fotoMem);
       const novoNome = `${Date.now()}${ext}`;
       fotoDestino = path.join(uploadsDir, novoNome);
+
       fs.copyFileSync(membro.fotoMem, fotoDestino);
     }
 
@@ -207,7 +212,7 @@ ipcMain.on("new-membro", async (event, membro) => {
       cidMembro: membro.cidMem,
       ufMembro: membro.ufMem,
       nascimentoMembro: membro.nascimentoMem,
-      fotoMembro: fotoDestino,
+      fotoMembro: fotoDestino
     });
 
     await novoMembro.save(); // Salva no mongodb
@@ -295,10 +300,11 @@ ipcMain.on("update-membro", (event, membro) => {
   console.log(membro);
   // Campo nome obrigatorio
   if (
-    membro.nomeMem === "" ||
-    membro.foneMem === "" ||
-    membro.cepMem === "" ||
-    membro.nascimentoMem === ""
+    membro.nomeMem === "",
+    membro.foneMem === "",
+    membro.cepMem === "",
+    membro.nascimentoMem === "",
+    membro.fotoMem === ""
   ) {
     dialog.showMessageBox({
       type: "warning",
@@ -321,10 +327,11 @@ ipcMain.on("update-membro", (event, membro) => {
     .then(async (result) => {
       if (result.response === 0) {
         try {
+          const dadosMembro = await membroModel.find({membro: membro})
           let fotoDestino = null;
 
           if (membro.fotoMem) {
-            const uploadsDir = path.join(__dirname, "uploads");
+            const uploadsDir = path.join(__dirname, 'uploads');
             if (!fs.existsSync(uploadsDir)) {
               fs.mkdirSync(uploadsDir);
             }
@@ -335,6 +342,8 @@ ipcMain.on("update-membro", (event, membro) => {
 
             fs.copyFileSync(membro.fotoMem, fotoDestino);
           }
+
+          
           const membroEditado = await membroModel.findByIdAndUpdate(
             membro.idMem,
             {
@@ -348,7 +357,7 @@ ipcMain.on("update-membro", (event, membro) => {
               cidMembro: membro.cidMem,
               ufMembro: membro.ufMem,
               nascimentoMembro: membro.nascimentoMem,
-              fotoMembro: fotoDestino || membro.fotoMembro,
+              fotoMembro: membro.fotoMem
             },
             {
               new: true,
@@ -364,7 +373,7 @@ ipcMain.on("update-membro", (event, membro) => {
             defaultId: 0,
           });
         } catch (error) {
-          console.log(error);
+          console.error('Erro ao editar membro:', error);
         }
       } else {
         event.reply("focus-all");

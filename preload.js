@@ -33,7 +33,7 @@ contextBridge.exposeInMainWorld('api', {
     // Deletar Membros
     deleteMembro: (idMem) => ipcRenderer.send('delete-membro', idMem),
     // Limpar tudo
-    clearGlobal: (clearGlobal) => ipcRenderer.on('clear-all',clearGlobal),
+    clearGlobal: (clearGlobal) => ipcRenderer.on('clear-all', clearGlobal),
     focusGlobal: (focusGlobal) => ipcRenderer.on('focus-all', focusGlobal),
 })
 

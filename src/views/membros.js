@@ -81,7 +81,7 @@ formMembro.addEventListener("submit", async (event) => {
     cidMem: cidMembro.value,
     ufMem: ufMembro.value,
     nascimentoMem: nascimentoMembro.value,
-    fotoMem: inputFotoMembro.files[0].path
+    fotoMem: inputFotoMembro.files.length > 0 ? inputFotoMembro.files[0].path : null
   };
   api.newMembro(Membro);
   formMembro.reset();
@@ -147,9 +147,15 @@ function buscarMembro() {
         // Preenche a data de nascimento
         (document.getElementById("inputNascimento").value = m.nascimentoMembro
           ? new Date(m.nascimentoMembro).toISOString().split("T")[0]
-          : ""),
-        (document.getElementById("fotoPreview").src = m.fotoMembro));
-      console.log(m.fotoMembro);
+          : ""));
+      if (m.fotoMembro) {
+        fotoPreview.src = m.fotoMembro;
+        fotoPreview.style.display = "block";
+      } else {
+        fotoPreview.src = "";
+        fotoPreview.style.display = "none";
+      }
+
 
       document.getElementById("inputSearch").value = "";
 
@@ -180,7 +186,7 @@ function editarMembro() {
     cidMem: cidMembro.value,
     ufMem: ufMembro.value,
     nascimentoMem: nascimentoMembro.value,
-    fotoMem: inputFotoMembro.files[0].path
+    fotoMem: inputFotoMembro.files.length > 0 ? inputFotoMembro.files[0].path : null
   };
   console.log(membro);
 
