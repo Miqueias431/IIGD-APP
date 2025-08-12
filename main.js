@@ -186,19 +186,28 @@ ipcMain.on("new-membro", async (event, membro) => {
   console.log(membro); // Debug do Membro
 
   try {
-    let fotoDestino = null;
+    // const uploadsDir = path.join(__dirname, 'uploads')
+    // if (!fs.existsSync(uploadsDir)) {
+    //   fs.mkdirSync(uploadsDir)
+    // }
 
-    if (membro.fotoMem) { // <-- Aqui usa fotoMem, não fotoMembro
+    // const fileName = `${Date.now()}_${path.basename(membro.fotoPreview)}`
+    // const destination = path.join(uploadsDir, fileName);
+
+    // fs.copyFileSync(membro.fotoPreview, destination);
+    let fotoDestino = null
+
+    if (membro.fotoMembro) { // <-- Aqui usa fotoMem, não fotoMembro
       const uploadsDir = path.join(__dirname, 'uploads');
       if (!fs.existsSync(uploadsDir)) {
         fs.mkdirSync(uploadsDir);
       }
 
-      const ext = path.extname(membro.fotoMem);
+      const ext = path.basename(membro.fotoMembro);
       const novoNome = `${Date.now()}${ext}`;
       fotoDestino = path.join(uploadsDir, novoNome);
 
-      fs.copyFileSync(membro.fotoMem, fotoDestino);
+      fs.copyFileSync(membro.fotoMembro, fotoDestino);
     }
 
     const novoMembro = new membroModel({
@@ -327,23 +336,21 @@ ipcMain.on("update-membro", (event, membro) => {
     .then(async (result) => {
       if (result.response === 0) {
         try {
-          const dadosMembro = await membroModel.find({membro: membro})
-          let fotoDestino = null;
+          let fotoDestino = null
 
-          if (membro.fotoMem) {
+          if (membro.fotoMembro) { // <-- Aqui usa fotoMem, não fotoMembro
             const uploadsDir = path.join(__dirname, 'uploads');
             if (!fs.existsSync(uploadsDir)) {
               fs.mkdirSync(uploadsDir);
             }
 
-            const ext = path.extname(membro.fotoMem);
+            const ext = path.basename(membro.fotoMembro);
             const novoNome = `${Date.now()}${ext}`;
             fotoDestino = path.join(uploadsDir, novoNome);
 
-            fs.copyFileSync(membro.fotoMem, fotoDestino);
+            fs.copyFileSync(membro.fotoMembro, fotoDestino);
           }
 
-          
           const membroEditado = await membroModel.findByIdAndUpdate(
             membro.idMem,
             {
@@ -357,7 +364,7 @@ ipcMain.on("update-membro", (event, membro) => {
               cidMembro: membro.cidMem,
               ufMembro: membro.ufMem,
               nascimentoMembro: membro.nascimentoMem,
-              fotoMembro: membro.fotoMem
+              fotoMembro: fotoDestino
             },
             {
               new: true,

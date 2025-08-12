@@ -107,7 +107,7 @@ div.fotoMembro {
         justify-content: center; */
 
         &>img {
-            
+
             border: 1px solid #dfdfdf;
             border-radius: 5px;
             width: 150px;

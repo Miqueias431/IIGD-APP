@@ -54,12 +54,17 @@ let compMembro = document.getElementById("inputComplemento");
 let bairroMembro = document.getElementById("inputBairro");
 let cidMembro = document.getElementById("inputLocalidade");
 let ufMembro = document.getElementById("inputUF");
-let inputFotoMembro = document.getElementById("inputFotoMembro");
-let fotoPreview = document.getElementById("fotoPreview");
+// let uploadMembro = document.getElementById("uploadMembro");
+// let fotoPreview = document.getElementById("fotoPreview");
 
-inputFotoMembro.addEventListener("change", () => {
-  if (inputFotoMembro.files.length > 0) {
-    const file = inputFotoMembro.files[0];
+let uploadMembro, fotoPreview
+uploadMembro = document.querySelector("#inputFotoMembro")
+// Renderizar a imagem
+fotoPreview = document.querySelector("#fotoPreview")
+
+uploadMembro.addEventListener("change", () => {
+  if (uploadMembro.files.length > 0) {
+    const file = uploadMembro.files[0];
     fotoPreview.src = URL.createObjectURL(file);
     fotoPreview.style.display = "block";
   } else {
@@ -81,12 +86,12 @@ formMembro.addEventListener("submit", async (event) => {
     cidMem: cidMembro.value,
     ufMem: ufMembro.value,
     nascimentoMem: nascimentoMembro.value,
-    fotoMem: inputFotoMembro.files.length > 0 ? inputFotoMembro.files[0].path : null
+    fotoMem: uploadMembro.files[0].path
   };
   api.newMembro(Membro);
   formMembro.reset();
   // limpa foto
-  inputFotoMembro.value = "";
+  uploadMembro.value = "";
   fotoPreview.src = "";
   fotoPreview.style.display = "none";
 });
@@ -130,24 +135,27 @@ function buscarMembro() {
   });
 
   api.dataMembro((event, dadosMembro) => {
-    arrayMembro = JSON.parse(dadosMembro);
+
+    const membro = JSON.parse(dadosMembro)
+    arrayMembro = membro
     console.log(arrayMembro);
 
     arrayMembro.forEach((m) => {
-      ((document.getElementById("inputIdMem").value = m._id),
-        (document.getElementById("inputNomeMem").value = m.nomeMembro),
-        (document.getElementById("inputPhoneMem").value = m.foneMembro),
-        (document.getElementById("inputCEP").value = m.cepMembro),
-        (document.getElementById("inputLogradouro").value = m.logMembro),
-        (document.getElementById("inputNumero").value = m.numMembro),
-        (document.getElementById("inputComplemento").value = m.compMembro),
-        (document.getElementById("inputBairro").value = m.bairroMembro),
-        (document.getElementById("inputLocalidade").value = m.cidMembro),
-        (document.getElementById("inputUF").value = m.ufMembro),
-        // Preenche a data de nascimento
-        (document.getElementById("inputNascimento").value = m.nascimentoMembro
-          ? new Date(m.nascimentoMembro).toISOString().split("T")[0]
-          : ""));
+      document.getElementById("inputIdMem").value = m._id
+      document.getElementById("inputNomeMem").value = m.nomeMembro
+      document.getElementById("inputPhoneMem").value = m.foneMembro
+      document.getElementById("inputCEP").value = m.cepMembro
+      document.getElementById("inputLogradouro").value = m.logMembro
+      document.getElementById("inputNumero").value = m.numMembro
+      document.getElementById("inputComplemento").value = m.compMembro
+      document.getElementById("inputBairro").value = m.bairroMembro
+      document.getElementById("inputLocalidade").value = m.cidMembro
+      document.getElementById("inputUF").value = m.ufMembro
+      // Preenche a data de nascimento
+      document.getElementById("inputNascimento").value = m.nascimentoMembro
+        ? new Date(m.nascimentoMembro).toISOString().split("T")[0]
+        : ""
+      // fotoPreview.src = m.fotoMembro
       if (m.fotoMembro) {
         fotoPreview.src = m.fotoMembro;
         fotoPreview.style.display = "block";
@@ -155,7 +163,6 @@ function buscarMembro() {
         fotoPreview.src = "";
         fotoPreview.style.display = "none";
       }
-
 
       document.getElementById("inputSearch").value = "";
 
@@ -186,7 +193,7 @@ function editarMembro() {
     cidMem: cidMembro.value,
     ufMem: ufMembro.value,
     nascimentoMem: nascimentoMembro.value,
-    fotoMem: inputFotoMembro.files.length > 0 ? inputFotoMembro.files[0].path : null
+    fotoMem: uploadMembro.files[0].path
   };
   console.log(membro);
 
@@ -250,7 +257,7 @@ function resetForm() {
   btnRead.disabled = false;
   btnUpdate.disabled = true;
   btnDelete.disabled = true;
-  inputFotoMembro.value = "";
+  uploadMembro.value = "";
   fotoPreview.src = "";
   fotoPreview.style.display = "none";
 }
