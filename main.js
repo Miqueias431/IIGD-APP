@@ -15,7 +15,6 @@ let dbCon = null;
 // Importação do Schema (model) das coleções("tabelas")
 const membroModel = require("./src/models/Membros.js");
 const { crash } = require("node:process");
-process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 // Janela Principal (definir o objeto win como variavel publica)
 let win;
 const createWindow = () => {
@@ -51,7 +50,7 @@ const aboutWindow = () => {
       webPreferences: {
         preload: path.join(__dirname, "preload.js"),
         nodeIntegration: true,
-        contextIsolation: false
+        contextIsolation: true
       },
     });
   }
@@ -82,7 +81,7 @@ const membrosWindow = () => {
       webPreferences: {
         preload: path.join(__dirname, "preload.js"),
         nodeIntegration: true,
-        contextIsolation: false
+        contextIsolation: true
       },
     });
   }
@@ -190,19 +189,17 @@ ipcMain.on("new-membro", async (event, membro) => {
   console.log(membro); // Debug do Membro
 
   try {
-    let fotoDestino = null
-
-    if (membro.fotoMem) {
-      const filePath = membro.fotoMem.path; // Aqui funciona
-      const uploadsDir = path.join(__dirname, 'uploads');
-      if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir);
-
-      const ext = path.basename(filePath);
-      const novoNome = `${Date.now()}${ext}`;
-      fotoDestino = path.join(uploadsDir, novoNome);
-
-      fs.copyFileSync(filePath, fotoDestino);
+    const uploadsDir = path.join(__dirname, 'uploads')
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir)
     }
+
+    // const ext = path.extname(membro.fotoMem);
+    const fileName = `${Date.now()}_${membro.fotoMem.path}`;
+    const destination = path.join(uploadsDir, fileName);
+
+    fs.copyFileSync(membro.fotoMem.path, destination);
+
 
 
     const novoMembro = new membroModel({
@@ -216,7 +213,7 @@ ipcMain.on("new-membro", async (event, membro) => {
       cidMembro: membro.cidMem,
       ufMembro: membro.ufMem,
       nascimentoMembro: membro.nascimentoMem,
-      fotoMembro: fotoDestino
+      fotoMembro: destination
     });
 
     await novoMembro.save(); // Salva no mongodb
@@ -331,22 +328,33 @@ ipcMain.on("update-membro", (event, membro) => {
     .then(async (result) => {
       if (result.response === 0) {
         try {
-          let fotoDestino = null
-
-          if (membro.fotoMem) {
-            const filePath = membro.fotoMem.path; // Aqui funciona
-            const uploadsDir = path.join(__dirname, 'uploads');
-            if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir);
-
-            const ext = path.basename(filePath);
-            const novoNome = `${Date.now()}${ext}`;
-            fotoDestino = path.join(uploadsDir, novoNome);
-
-            fs.copyFileSync(filePath, fotoDestino);
+          // let fotoDestino = null;
+          // Adicionar validação aqui
+          if (!membro.fotoMem) {
+            dialog.showMessageBox({
+              type: "warning",
+              title: "Aviso",
+              message: "Por favor, selecione uma foto para o membro.",
+              buttons: ["Ok"],
+            });
+            event.reply("reset-form"); // Ou outra ação apropriada
+            return; // Interrompe a execução se a foto não for fornecida
           }
 
+          const uploadsDir = path.join(__dirname, 'uploads')
+          if (!fs.existsSync(uploadsDir)) {
+            fs.mkdirSync(uploadsDir)
+          }
 
-          const membroEditado = await membroModel.findByIdAndUpdate(
+          // const ext = path.extname(membro.fotoMem);
+          const fileName = `${Date.now()}_${membro.fotoMem}`;
+          const destination = path.join(uploadsDir, fileName);
+
+          fs.copyFileSync(membro.fotoMem, destination);
+
+
+
+          await membroModel.findByIdAndUpdate(
             membro.idMem,
             {
               nomeMembro: membro.nomeMem,
@@ -359,7 +367,7 @@ ipcMain.on("update-membro", (event, membro) => {
               cidMembro: membro.cidMem,
               ufMembro: membro.ufMem,
               nascimentoMembro: membro.nascimentoMem,
-              fotoMembro: fotoDestino
+              fotoMem: destination
             },
             {
               new: true,

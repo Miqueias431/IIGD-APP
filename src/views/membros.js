@@ -74,6 +74,7 @@ uploadMembro.addEventListener("change", () => {
     fotoPreview.style.display = "none";
   }
 });
+console.log(uploadMembro)
 
 formMembro.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -88,8 +89,7 @@ formMembro.addEventListener("submit", async (event) => {
     cidMem: cidMembro.value,
     ufMem: ufMembro.value,
     nascimentoMem: nascimentoMembro.value,
-    fotoMem: uploadMembro.files.length > 0 ? uploadMembro.files[0].path : null
-
+    fotoMem: uploadMembro.files[0] ? uploadMembro.files[0].path : undefined
   };
   api.newMembro(Membro);
   formMembro.reset();
@@ -107,7 +107,7 @@ function buscarMembro() {
     .getElementById("inputSearch")
     .value.trim()
     .replace(/\s+/g, " ");
-  console.log(nomeMembro);
+  // console.log(nomeMembro);
   if (nomeMembro === "") {
     api.infoSearchDialog();
   } else {
@@ -141,7 +141,7 @@ function buscarMembro() {
 
     const membro = JSON.parse(dadosMembro)
     arrayMembro = membro
-    console.log(arrayMembro);
+    // console.log(arrayMembro);
 
     arrayMembro.forEach((m) => {
       document.getElementById("inputIdMem").value = m._id
@@ -158,7 +158,7 @@ function buscarMembro() {
       document.getElementById("inputNascimento").value = m.nascimentoMembro
         ? new Date(m.nascimentoMembro).toISOString().split("T")[0]
         : ""
-      // fotoPreview.src = m.fotoMembro
+      uploadMembro.src = m.fotoMembro
       if (m.fotoMembro) {
         fotoPreview.src = m.fotoMembro;
         fotoPreview.style.display = "block";
@@ -198,7 +198,7 @@ function editarMembro() {
     nascimentoMem: nascimentoMembro.value,
     fotoMem: uploadMembro.files.length > 0 ? uploadMembro.files[0].path : null
   };
-  console.log(membro);
+  // console.log(membro);
 
   api.updateMembro(membro);
 
@@ -220,9 +220,13 @@ function editarMembro() {
 
 function excluirMembro() {
   let idMem = idMembro.value;
-  console.log(idMem);
+  // console.log(idMem);
 
   api.deleteMembro(idMem);
+  // limpa foto
+  uploadMembro.value = "";
+  fotoPreview.src = "";
+  fotoPreview.style.display = "none";
 
   document.getElementById("btnRead").disabled = false;
   document.getElementById("inputSearch").disabled = false;
@@ -233,7 +237,7 @@ function excluirMembro() {
 
 // Reset Form >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 api.clearGlobal((clearGlobal) => {
-  console.log("Campo limpo");
+  // console.log("Campo limpo");
   formMembro.reset();
 });
 

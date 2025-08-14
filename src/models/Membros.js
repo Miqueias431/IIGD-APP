@@ -36,7 +36,13 @@ const membroSchema = new Schema(
         nascimentoMembro: {
             type: Date
         },
+        uploadMembro: {
+            type:String
+        },
         fotoPreview: {
+            type: String
+        },
+        fotoMem: {
             type: String
         }
     }
