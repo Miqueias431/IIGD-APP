@@ -15,7 +15,7 @@ let dbCon = null;
 // Importação do Schema (model) das coleções("tabelas")
 const membroModel = require("./src/models/Membros.js");
 const { crash } = require("node:process");
-
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 // Janela Principal (definir o objeto win como variavel publica)
 let win;
 const createWindow = () => {
@@ -50,6 +50,8 @@ const aboutWindow = () => {
       modal: true,
       webPreferences: {
         preload: path.join(__dirname, "preload.js"),
+        nodeIntegration: true,
+        contextIsolation: false
       },
     });
   }
@@ -79,6 +81,8 @@ const membrosWindow = () => {
       modal: true,
       webPreferences: {
         preload: path.join(__dirname, "preload.js"),
+        nodeIntegration: true,
+        contextIsolation: false
       },
     });
   }
@@ -186,29 +190,20 @@ ipcMain.on("new-membro", async (event, membro) => {
   console.log(membro); // Debug do Membro
 
   try {
-    // const uploadsDir = path.join(__dirname, 'uploads')
-    // if (!fs.existsSync(uploadsDir)) {
-    //   fs.mkdirSync(uploadsDir)
-    // }
-
-    // const fileName = `${Date.now()}_${path.basename(membro.fotoPreview)}`
-    // const destination = path.join(uploadsDir, fileName);
-
-    // fs.copyFileSync(membro.fotoPreview, destination);
     let fotoDestino = null
 
-    if (membro.fotoMem) { // <-- Aqui usa fotoMem, não fotoMembro
+    if (membro.fotoMem) {
+      const filePath = membro.fotoMem.path; // Aqui funciona
       const uploadsDir = path.join(__dirname, 'uploads');
-      if (!fs.existsSync(uploadsDir)) {
-        fs.mkdirSync(uploadsDir);
-      }
+      if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir);
 
-      const ext = path.basename(membro.fotoMem);
+      const ext = path.basename(filePath);
       const novoNome = `${Date.now()}${ext}`;
       fotoDestino = path.join(uploadsDir, novoNome);
 
-      fs.copyFileSync(membro.fotoMem, fotoDestino);
+      fs.copyFileSync(filePath, fotoDestino);
     }
+
 
     const novoMembro = new membroModel({
       nomeMembro: membro.nomeMem,
@@ -338,18 +333,18 @@ ipcMain.on("update-membro", (event, membro) => {
         try {
           let fotoDestino = null
 
-          if (membro.fotoMem) { // <-- Aqui usa fotoMem, não fotoMembro
+          if (membro.fotoMem) {
+            const filePath = membro.fotoMem.path; // Aqui funciona
             const uploadsDir = path.join(__dirname, 'uploads');
-            if (!fs.existsSync(uploadsDir)) {
-              fs.mkdirSync(uploadsDir);
-            }
+            if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir);
 
-            const ext = path.basename(membro.fotoMem);
+            const ext = path.basename(filePath);
             const novoNome = `${Date.now()}${ext}`;
             fotoDestino = path.join(uploadsDir, novoNome);
 
-            fs.copyFileSync(membro.fotoMem, fotoDestino);
+            fs.copyFileSync(filePath, fotoDestino);
           }
+
 
           const membroEditado = await membroModel.findByIdAndUpdate(
             membro.idMem,

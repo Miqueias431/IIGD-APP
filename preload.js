@@ -1,3 +1,5 @@
+
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 const { contextBridge, ipcRenderer } = require('electron')
 
 // Status de conexão (verifica se os bancos de dados está conectado)
