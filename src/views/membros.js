@@ -54,13 +54,15 @@ let compMembro = document.getElementById("inputComplemento");
 let bairroMembro = document.getElementById("inputBairro");
 let cidMembro = document.getElementById("inputLocalidade");
 let ufMembro = document.getElementById("inputUF");
-// let uploadMembro = document.getElementById("uploadMembro");
-// let fotoPreview = document.getElementById("fotoPreview");
-
-let uploadMembro, fotoPreview
-uploadMembro = document.querySelector("#inputFotoMembro")
+// Foto
+let uploadMembro = document.getElementById("inputFotoMembro");
 // Renderizar a imagem
-fotoPreview = document.querySelector("#fotoPreview")
+let fotoPreview = document.getElementById("fotoPreview");
+
+// let uploadMembro, fotoPreview
+// uploadMembro = document.querySelector("#inputFotoMembro")
+// // Renderizar a imagem
+// fotoPreview = document.querySelector("#fotoPreview")
 
 uploadMembro.addEventListener("change", () => {
   if (uploadMembro.files.length > 0) {
@@ -86,7 +88,7 @@ formMembro.addEventListener("submit", async (event) => {
     cidMem: cidMembro.value,
     ufMem: ufMembro.value,
     nascimentoMem: nascimentoMembro.value,
-    fotoMem: uploadMembro.files[0].path
+    fotoMem: inputFotoMembro.files.length > 0 ? inputFotoMembro.files[0].path : null
   };
   api.newMembro(Membro);
   formMembro.reset();
@@ -193,7 +195,7 @@ function editarMembro() {
     cidMem: cidMembro.value,
     ufMem: ufMembro.value,
     nascimentoMem: nascimentoMembro.value,
-    fotoMem: uploadMembro.files[0].path
+    fotoMem: inputFotoMembro.files.length > 0 ? inputFotoMembro.files[0].path : null
   };
   console.log(membro);
 

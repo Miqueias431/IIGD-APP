@@ -3,8 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- evitar ataques de Cross Site Scripting (injeção de dados)
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'"> -->
+    <!-- evitar ataques de Cross Site Scripting (injeção de dados) -->
+    <!-- <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'"
+    /> -->
     <title>Membroes</title>
     <!-- bootsrap -->
     <link rel="stylesheet" href="../public/css/bootstrap.min.css" />
@@ -22,7 +25,7 @@
             type="text"
             class="form-control"
             id="inputSearch"
-            maxlength="30"
+            maxlength="50"
             spellcheck="false"
           />
           <ul
@@ -63,7 +66,7 @@
             class="form-control"
             id="inputNomeMem"
             required
-            maxlength="50"
+            maxlength="140"
             spellcheck="false"
           />
         </div>
@@ -93,40 +96,27 @@
           />
         </div>
 
-        <div class="fotoMembro">
-          <!-- <div class="mb-5">
-                    <label for="inputFoto" class="form-label">Foto do Membro</label>
-                    <input type="file" id="inputFoto" accept="image/*" class="form-control">
-                </div> 
-                <div class="" id="imgMem">
-                    <img src="../public/img/camera.png" alt="img do produto" id="imagemMembro">
-                </div> -->
-          <div class="mb-3">
-            <label for="inputFotoMembro" class="form-label"
-              >Foto do Membro</label
-            >
-            <input
-              type="file"
-              id="inputFotoMembro"
-              class="form-control"
-            />
-          </div>
+        <!-- <div class="fotoMembro"></div> -->
 
-          <div class="mb-3">
-            <img
-              id="fotoPreview"
-              alt="Foto do membro"
-              style="
-                max-width: 150px;
-                max-height: 250px;
-                margin-top: 115px;
-                margin-left: -20px;
-                border: 1px solid #d1d1d1;
-                border-radius: 4px;
-                display: none;
-              "
-            />
-          </div>
+        <div class="mb-2">
+          <label for="inputFotoMembro" class="form-label">Foto do Membro</label>
+          <input type="file" id="inputFotoMembro" class="form-control" />
+        </div>
+
+        <div class="mb-2">
+          <img
+            id="fotoPreview"
+            alt="Foto do membro"
+            style="
+              max-width: 150px;
+              max-height: 250px;
+              margin-top: 115px;
+              margin-left: -20px;
+              border: 1px solid #d1d1d1;
+              border-radius: 4px;
+              display: none;
+            "
+          />
         </div>
 
         <div class="col-md-5">
