@@ -194,8 +194,8 @@ ipcMain.on("new-membro", async (event, membro) => {
       fs.mkdirSync(uploadsDir);
     }
 
-    // const ext = path.extname(membro.fotoMem);
-    const fileName = `${Date.now()}_${membro.fotoMem}`;
+    const ext = path.extname(membro.fotoMem);
+    const fileName = `${Date.now()}_${ext}`;
     const destination = path.join(uploadsDir, fileName);
 
     fs.copyFileSync(membro.fotoMem, destination);
@@ -211,7 +211,7 @@ ipcMain.on("new-membro", async (event, membro) => {
       cidMembro: membro.cidMem,
       ufMembro: membro.ufMem,
       nascimentoMembro: membro.nascimentoMem,
-      fotoMembro: destination,
+      fotoMembro: destination
     });
 
     await novoMembro.save(); // Salva no mongodb

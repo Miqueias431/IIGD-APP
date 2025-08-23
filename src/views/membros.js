@@ -63,8 +63,7 @@ let uploadMembro, fotoPreview;
 uploadMembro = document.querySelector("#inputFotoMembro");
 // Renderizar a imagem
 fotoPreview = document.querySelector("#fotoPreview");
-console.log(uploadMembro);
-console.log(fotoPreview);
+
 uploadMembro.addEventListener("change", () => {
   if (uploadMembro.files.length > 0) {
     const file = uploadMembro.files[0];
@@ -93,7 +92,7 @@ formMembro.addEventListener("submit", async (event) => {
     fotoMem:
       uploadMembro.files.length > 0
         ? window.api.getFilePath(uploadMembro.files[0])
-        : "",
+        : null,
   };
 
   console.log("Arquivo selecionado:", uploadMembro.files[0]); // mostra todo o File

@@ -11,8 +11,8 @@ contextBridge.exposeInMainWorld("api", {
   verElectron: () => process.versions.electron,
   hello: () => ipcRenderer.send("send-message", "Oi!"),
   getFilePath: (file) => file.path, // expõe o caminho real do arquivo
-  addMembro: (data) => ipcRenderer.send("new-membro", data),
-  updateMembro: (data) => ipcRenderer.send("update-membro", data),
+//   addMembro: (data) => ipcRenderer.send("new-membro", data),
+//   updateMembro: (data) => ipcRenderer.send("update-membro", data),
   openAbout: () => ipcRenderer.send("open-about"),
   openmembrosWindow: () => ipcRenderer.send("open-membros-window"),
   dbMessage: (message) => ipcRenderer.on("db-message", message),
