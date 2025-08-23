@@ -142,4 +142,5 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 database.js
+uploads/
 >>>>>>> 225055b2d26b1fa1da27e0963f8c23eac9ffc6aa
