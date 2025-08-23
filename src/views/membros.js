@@ -59,11 +59,12 @@ let ufMembro = document.getElementById("inputUF");
 // // Renderizar a imagem
 // let fotoPreview = document.getElementById("fotoPreview");
 
-let uploadMembro, fotoPreview
-uploadMembro = document.querySelector("#inputFotoMembro")
+let uploadMembro, fotoPreview;
+uploadMembro = document.querySelector("#inputFotoMembro");
 // Renderizar a imagem
-fotoPreview = document.querySelector("#fotoPreview")
-
+fotoPreview = document.querySelector("#fotoPreview");
+console.log(uploadMembro);
+console.log(fotoPreview);
 uploadMembro.addEventListener("change", () => {
   if (uploadMembro.files.length > 0) {
     const file = uploadMembro.files[0];
@@ -74,7 +75,7 @@ uploadMembro.addEventListener("change", () => {
     fotoPreview.style.display = "none";
   }
 });
-console.log(uploadMembro)
+console.log(uploadMembro);
 
 formMembro.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -89,8 +90,14 @@ formMembro.addEventListener("submit", async (event) => {
     cidMem: cidMembro.value,
     ufMem: ufMembro.value,
     nascimentoMem: nascimentoMembro.value,
-    fotoMem: uploadMembro.files[0] ? uploadMembro.files[0].path : undefined
+    fotoMem:
+      uploadMembro.files.length > 0
+        ? window.api.getFilePath(uploadMembro.files[0])
+        : "",
   };
+
+  console.log("Arquivo selecionado:", uploadMembro.files[0]); // mostra todo o File
+  console.log("Caminho do arquivo:", Membro.fotoMem);
   api.newMembro(Membro);
   formMembro.reset();
   // limpa foto
@@ -138,27 +145,26 @@ function buscarMembro() {
   });
 
   api.dataMembro((event, dadosMembro) => {
-
-    const membro = JSON.parse(dadosMembro)
-    arrayMembro = membro
+    const membro = JSON.parse(dadosMembro);
+    arrayMembro = membro;
     // console.log(arrayMembro);
 
     arrayMembro.forEach((m) => {
-      document.getElementById("inputIdMem").value = m._id
-      document.getElementById("inputNomeMem").value = m.nomeMembro
-      document.getElementById("inputPhoneMem").value = m.foneMembro
-      document.getElementById("inputCEP").value = m.cepMembro
-      document.getElementById("inputLogradouro").value = m.logMembro
-      document.getElementById("inputNumero").value = m.numMembro
-      document.getElementById("inputComplemento").value = m.compMembro
-      document.getElementById("inputBairro").value = m.bairroMembro
-      document.getElementById("inputLocalidade").value = m.cidMembro
-      document.getElementById("inputUF").value = m.ufMembro
+      document.getElementById("inputIdMem").value = m._id;
+      document.getElementById("inputNomeMem").value = m.nomeMembro;
+      document.getElementById("inputPhoneMem").value = m.foneMembro;
+      document.getElementById("inputCEP").value = m.cepMembro;
+      document.getElementById("inputLogradouro").value = m.logMembro;
+      document.getElementById("inputNumero").value = m.numMembro;
+      document.getElementById("inputComplemento").value = m.compMembro;
+      document.getElementById("inputBairro").value = m.bairroMembro;
+      document.getElementById("inputLocalidade").value = m.cidMembro;
+      document.getElementById("inputUF").value = m.ufMembro;
       // Preenche a data de nascimento
       document.getElementById("inputNascimento").value = m.nascimentoMembro
         ? new Date(m.nascimentoMembro).toISOString().split("T")[0]
-        : ""
-      uploadMembro.src = m.fotoMembro
+        : "";
+      uploadMembro.src = m.fotoMembro;
       if (m.fotoMembro) {
         fotoPreview.src = m.fotoMembro;
         fotoPreview.style.display = "block";
@@ -196,7 +202,7 @@ function editarMembro() {
     cidMem: cidMembro.value,
     ufMem: ufMembro.value,
     nascimentoMem: nascimentoMembro.value,
-    fotoMem: uploadMembro.files.length > 0 ? uploadMembro.files[0].path : null
+    fotoMem: uploadMembro.files.length > 0 ? uploadMembro.files[0].path : null,
   };
   // console.log(membro);
 

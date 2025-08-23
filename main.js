@@ -50,7 +50,7 @@ const aboutWindow = () => {
       webPreferences: {
         preload: path.join(__dirname, "preload.js"),
         nodeIntegration: true,
-        contextIsolation: true
+        contextIsolation: true,
       },
     });
   }
@@ -81,7 +81,7 @@ const membrosWindow = () => {
       webPreferences: {
         preload: path.join(__dirname, "preload.js"),
         nodeIntegration: true,
-        contextIsolation: true
+        contextIsolation: true,
       },
     });
   }
@@ -189,18 +189,16 @@ ipcMain.on("new-membro", async (event, membro) => {
   console.log(membro); // Debug do Membro
 
   try {
-    const uploadsDir = path.join(__dirname, 'uploads')
+    const uploadsDir = path.join(__dirname, "uploads");
     if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir)
+      fs.mkdirSync(uploadsDir);
     }
 
     // const ext = path.extname(membro.fotoMem);
-    const fileName = `${Date.now()}_${membro.fotoMem.path}`;
+    const fileName = `${Date.now()}_${membro.fotoMem}`;
     const destination = path.join(uploadsDir, fileName);
 
-    fs.copyFileSync(membro.fotoMem.path, destination);
-
-
+    fs.copyFileSync(membro.fotoMem, destination);
 
     const novoMembro = new membroModel({
       nomeMembro: membro.nomeMem,
@@ -213,7 +211,7 @@ ipcMain.on("new-membro", async (event, membro) => {
       cidMembro: membro.cidMem,
       ufMembro: membro.ufMem,
       nascimentoMembro: membro.nascimentoMem,
-      fotoMembro: destination
+      fotoMembro: destination,
     });
 
     await novoMembro.save(); // Salva no mongodb
@@ -301,11 +299,11 @@ ipcMain.on("update-membro", (event, membro) => {
   console.log(membro);
   // Campo nome obrigatorio
   if (
-    membro.nomeMem === "",
+    (membro.nomeMem === "",
     membro.foneMem === "",
     membro.cepMem === "",
     membro.nascimentoMem === "",
-    membro.fotoMem === ""
+    membro.fotoMem === "")
   ) {
     dialog.showMessageBox({
       type: "warning",
@@ -341,9 +339,9 @@ ipcMain.on("update-membro", (event, membro) => {
             return; // Interrompe a execução se a foto não for fornecida
           }
 
-          const uploadsDir = path.join(__dirname, 'uploads')
+          const uploadsDir = path.join(__dirname, "uploads");
           if (!fs.existsSync(uploadsDir)) {
-            fs.mkdirSync(uploadsDir)
+            fs.mkdirSync(uploadsDir);
           }
 
           // const ext = path.extname(membro.fotoMem);
@@ -351,8 +349,6 @@ ipcMain.on("update-membro", (event, membro) => {
           const destination = path.join(uploadsDir, fileName);
 
           fs.copyFileSync(membro.fotoMem, destination);
-
-
 
           await membroModel.findByIdAndUpdate(
             membro.idMem,
@@ -367,7 +363,7 @@ ipcMain.on("update-membro", (event, membro) => {
               cidMembro: membro.cidMem,
               ufMembro: membro.ufMem,
               nascimentoMembro: membro.nascimentoMem,
-              fotoMem: destination
+              fotoMem: destination,
             },
             {
               new: true,
@@ -383,7 +379,7 @@ ipcMain.on("update-membro", (event, membro) => {
             defaultId: 0,
           });
         } catch (error) {
-          console.error('Erro ao editar membro:', error);
+          console.error("Erro ao editar membro:", error);
         }
       } else {
         event.reply("focus-all");
